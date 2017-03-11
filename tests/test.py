@@ -31,3 +31,21 @@ def test_add_command():
 	assert b.process("/hello") == "hello!"
 	assert b.process("/bye") == "goodbye..."
 	
+def test_http_interface():
+	
+	class MyBot(Bot):
+		def default_response(self, in_message):
+			return in_message[::-1]
+			
+	b = MyBot()
+	b.listen_http()
+	
+	import http.client
+	import json
+	conn = http.client.HTTPConnection("127.0.0.1:8000")
+	conn.request("GET", "/process?in_message=hello")
+	r = conn.getresponse()
+	assert r.status == 200
+	ret = json.loads(r.read().decode())
+	assert ret["out_message"] == "olleh"
+	

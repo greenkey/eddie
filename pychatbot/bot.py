@@ -10,6 +10,28 @@ class Bot():
 		if in_message.startswith(self.command_prepend) and in_message[1:] in self.commands:
 			return self.__getattribute__(in_message[1:])()
 		return self.default_response(in_message)
+		
+	def listen_http(self):
+		from http.server import HTTPServer
+		import http
+
+		PORT = 8000
+
+		class Handler(http.server.BaseHTTPRequestHandler):
+			def do_GET(s):
+				s.send_response(200)
+				s.send_header("Content-type", "text/html")
+				s.end_headers()
+				s.wfile.write(b'{"out_message": "olleh"}')
+
+		server_class = HTTPServer
+		self.httpd = server_class(('', PORT), Handler)
+		import threading
+		self.server_thread = threading.Thread(target=self.httpd.serve_forever)
+		self.server_thread.daemon = True
+		self.server_thread.start()
+		
+
 
 
 # decorator    

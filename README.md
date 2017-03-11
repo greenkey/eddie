@@ -50,6 +50,21 @@ Just define a method of your Bot class using the `command` decorator.
 'hello!'
 ```
 
+### Defining interfaces
+
+A bot running in local would be pretty useless, isn't it?
+The simplest interfase we can give to our bot is the http one.
+
+```
+>>> from pychatbot.bot import Bot
+>>> class MyBot(Bot):
+...     def default_response(self, in_message):
+...             return in_message
+... 
+>>> b = MyBot()
+>>> b.listen_http(port=8000) # defaults port:8000
+```
+
 ## Get involved
 
 If you want to contribute, download the repository, then:
