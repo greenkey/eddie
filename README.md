@@ -62,8 +62,12 @@ The simplest interfase we can give to our bot is the http one.
 ...             return in_message
 ... 
 >>> b = MyBot()
->>> b.listen_http(port=8000) # defaults port:8000
+>>> b.listen_http()
 ```
+
+Then you can send message to the bot using simple GET requests (default port il 8000): `http://localhost:8000/process?in_message=hello`
+The output uwing the example will be a json with the message: `{"out_message": "olleh"}`
+
 
 ## Get involved
 

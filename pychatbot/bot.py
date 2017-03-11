@@ -12,21 +12,24 @@ class Bot():
 		return self.default_response(in_message)
 		
 	def listen_http(self):
-		from http.server import HTTPServer
+		from http.server import HTTPServer, BaseHTTPRequestHandler
 		import http
+		from threading import Thread
 
 		PORT = 8000
 
-		class Handler(http.server.BaseHTTPRequestHandler):
+		class Handler(BaseHTTPRequestHandler):
 			def do_GET(s):
 				s.send_response(200)
 				s.send_header("Content-type", "text/html")
 				s.end_headers()
 				s.wfile.write(b'{"out_message": "olleh"}')
 
-		server_class = HTTPServer
-		self.httpd = server_class(('', PORT), Handler)
-		self.httpd.serve_forever()
+		self.httpd = HTTPServer(('', PORT), Handler)
+		self.server_thread = Thread(target=self.httpd.serve_forever)
+		self.server_thread.daemon = True
+		self.server_thread.start()
+		#self.httpd.serve_forever()
 		
 
 
