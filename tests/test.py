@@ -51,4 +51,11 @@ def test_http_interface():
 	assert r.status == 200
 	ret = json.loads(r.read().decode())
 	assert ret["out_message"] == "olleh"
+	conn.close()
 	
+	conn = HTTPConnection("127.0.0.1:8000")
+	conn.request("GET", "/process?in_message=another+message")
+	r = conn.getresponse()
+	ret = json.loads(r.read().decode())
+	assert ret["out_message"] == "egassem rehtona"
+

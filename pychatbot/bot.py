@@ -1,3 +1,4 @@
+import json
 
 class Bot():
 	commands = []
@@ -15,15 +16,22 @@ class Bot():
 		from http.server import HTTPServer, BaseHTTPRequestHandler
 		import http
 		from threading import Thread
+		from urllib.parse import parse_qs
 
 		PORT = 8000
 
 		class Handler(BaseHTTPRequestHandler):
 			def do_GET(s):
+				
+				function, params = s.path.split("?")
+				function, params = function[1:], parse_qs(params)
+				
 				s.send_response(200)
-				s.send_header("Content-type", "text/html")
 				s.end_headers()
-				s.wfile.write(b'{"out_message": "olleh"}')
+				output = {
+					"out_message": self.process("".join(params["in_message"]))
+				}
+				s.wfile.write(json.dumps(output).encode("UTF-8"))
 
 		self.httpd = HTTPServer(('', PORT), Handler)
 		self.server_thread = Thread(target=self.httpd.serve_forever)
