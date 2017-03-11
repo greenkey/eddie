@@ -26,10 +26,7 @@ class Bot():
 
 		server_class = HTTPServer
 		self.httpd = server_class(('', PORT), Handler)
-		import threading
-		self.server_thread = threading.Thread(target=self.httpd.serve_forever)
-		self.server_thread.daemon = True
-		self.server_thread.start()
+		self.httpd.serve_forever()
 		
 
 

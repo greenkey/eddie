@@ -38,7 +38,11 @@ def test_http_interface():
 			return in_message[::-1]
 			
 	b = MyBot()
-	b.listen_http()
+	import threading
+	server_thread = threading.Thread(target=b.listen_http)
+	server_thread.daemon = True
+	server_thread.start()
+	#b.listen_http()
 	
 	import http.client
 	import json
