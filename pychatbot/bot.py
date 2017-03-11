@@ -36,10 +36,7 @@ class Bot():
 		self.httpd = HTTPServer(('', PORT), Handler)
 		self.server_thread = Thread(target=self.httpd.serve_forever)
 		self.server_thread.daemon = True
-		self.server_thread.start()
-		#self.httpd.serve_forever()
-		
-
+		self.httpd.serve_forever()
 
 
 # decorator    

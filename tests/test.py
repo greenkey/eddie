@@ -36,6 +36,7 @@ def test_http_interface():
 	import json
 	from threading import Thread
 	from urllib.parse import urlencode
+	from time import sleep
 	
 	class MyBot(Bot):
 		def default_response(self, in_message):
@@ -44,8 +45,11 @@ def test_http_interface():
 	b = MyBot()
 	server_thread = Thread(target=b.listen_http)
 	server_thread.daemon = True
-	b.listen_http()
+	server_thread.start()
 	
+	# wait for server to be up&running
+	sleep(0.5)
+		
 	test_messages = ["hello", "another message"]
 	for tm in test_messages:
 		conn = HTTPConnection("127.0.0.1:8000")
