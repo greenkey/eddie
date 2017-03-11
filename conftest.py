@@ -1,3 +1,3 @@
 import sys
 
-collect_ignore = ["venv"]
+collect_ignore = ["venv","setup.py"]

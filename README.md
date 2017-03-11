@@ -2,6 +2,13 @@
 
 pychatbot is a library you can use to create your own chat bots.
 
+## Install
+
+You can install it downloading this repository in your project or using pip:
+```
+$ pip install git+ssh://loman@192.168.1.60/~/2TB-BIG/Progetti/personalWorks/pychatbot
+```
+
 ## Usage
 
 you have to defile your bot class, extending the default `Bot` class:
