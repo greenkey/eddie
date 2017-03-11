@@ -35,6 +35,7 @@ def test_http_interface():
 	from http.client import HTTPConnection
 	import json
 	from threading import Thread
+	from urllib.parse import urlencode
 	
 	class MyBot(Bot):
 		def default_response(self, in_message):
@@ -45,17 +46,13 @@ def test_http_interface():
 	server_thread.daemon = True
 	b.listen_http()
 	
-	conn = HTTPConnection("127.0.0.1:8000")
-	conn.request("GET", "/process?in_message=hello")
-	r = conn.getresponse()
-	assert r.status == 200
-	ret = json.loads(r.read().decode())
-	assert ret["out_message"] == "olleh"
-	conn.close()
-	
-	conn = HTTPConnection("127.0.0.1:8000")
-	conn.request("GET", "/process?in_message=another+message")
-	r = conn.getresponse()
-	ret = json.loads(r.read().decode())
-	assert ret["out_message"] == "egassem rehtona"
+	test_messages = ["hello", "another message"]
+	for tm in test_messages:
+		conn = HTTPConnection("127.0.0.1:8000")
+		conn.request("GET", "/process?"+urlencode({"in_message":tm}))
+		r = conn.getresponse()
+		assert r.status == 200
+		ret = json.loads(r.read().decode())
+		assert ret["out_message"] == tm[::-1]
+		conn.close()
 
