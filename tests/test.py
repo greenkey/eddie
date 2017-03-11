@@ -1,6 +1,33 @@
-
+from pychatbot.bot import Bot
 
 def test_create_bot_object():
-    from pychatbot.bot import Bot
     b = Bot()
     assert isinstance(b, Bot)
+    
+def test_default_behaviour():
+	class MyBot(Bot):
+		def default_response(self, in_message):
+			return in_message
+			
+	b = MyBot()
+	assert b.process("hello") == "hello"
+	assert b.process("123") == "123"
+	assert b.process("/hello") == "/hello"
+	
+
+def test_add_command():
+	from pychatbot.bot import command
+	
+	class MyBot(Bot):
+		@command
+		def hello():
+			return "hello!"
+			
+		@command
+		def bye():
+			return "goodbye..."
+		
+	b = MyBot()
+	assert b.process("/hello") == "hello!"
+	assert b.process("/bye") == "goodbye..."
+	
