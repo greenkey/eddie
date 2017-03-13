@@ -59,4 +59,3 @@ def test_http_interface():
 		ret = json.loads(r.read().decode())
 		assert ret["out_message"] == tm[::-1]
 		conn.close()
-
