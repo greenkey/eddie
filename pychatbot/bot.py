@@ -9,7 +9,8 @@ class Bot():
     
 	def process(self, in_message):
 		if in_message.startswith(self.command_prepend) and in_message[1:] in self.commands:
-			return self.__getattribute__(in_message[1:])()
+			f = self.__getattribute__(in_message[1:])
+			return f(self)
 		return self.default_response(in_message)
 		
 	def listen_http(self):
@@ -46,5 +47,5 @@ class command():
 		Bot.commands.append(f.__name__)
 		self.f = f
 
-	def __call__(self):
-		return self.f()
+	def __call__(self, *args, **kwargs):
+		return self.f(*args, **kwargs)
