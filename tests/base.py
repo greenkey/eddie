@@ -20,11 +20,11 @@ def test_add_command():
 	
 	class MyBot(Bot):
 		@command
-		def hello():
+		def hello(self):
 			return "hello!"
 			
 		@command
-		def bye():
+		def bye(self):
 			return "goodbye..."
 		
 	b = MyBot()
