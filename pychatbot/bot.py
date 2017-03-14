@@ -13,7 +13,7 @@ class Bot():
 			return f(self)
 		return self.default_response(in_message)
 		
-	def listen_http(self):
+	def http_serve(self):
 		from http.server import HTTPServer, BaseHTTPRequestHandler
 		import http
 		from threading import Thread
@@ -33,11 +33,26 @@ class Bot():
 					"out_message": self.process("".join(params["in_message"]))
 				}
 				s.wfile.write(json.dumps(output).encode("UTF-8"))
+				
+		def serve_loop():
+			while self.http_on:
+				self.httpd.handle_request()
 
 		self.httpd = HTTPServer(('', PORT), Handler)
-		self.server_thread = Thread(target=self.httpd.serve_forever)
-		self.server_thread.daemon = True
-		self.httpd.serve_forever()
+		self.http_on = True
+		self.http_thread = Thread(target=serve_loop)
+		self.http_thread.daemon = True
+		self.http_thread.start()
+		
+		while not self.http_thread.is_alive():
+			pass
+		
+
+	def http_stop(self):
+		self.http_on = False
+
+		while self.http_thread.is_alive():
+			self.httpd.server_close()
 
 
 # decorator    
