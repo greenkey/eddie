@@ -53,6 +53,14 @@ class Bot():
 
 		while self.http_thread.is_alive():
 			self.httpd.server_close()
+			
+
+	def telegram_serve(self,token):
+		from telegram.ext import Updater
+		
+		self.telegram = Updater(token)
+		self.telegram.start_polling()
+
 
 
 # decorator    
