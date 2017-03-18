@@ -56,14 +56,16 @@ class Bot():
 			
 
 	def telegram_serve(self,token):
-		from telegram.ext import Updater, CommandHandler
+		from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 		
+		self.telegram = Updater(token)
+		
+		# commands
+
 		def telegram_command_handler(bot, update):
 			command = update.message.text[1:]
 			f = self.__getattribute__(command)
 			update.message.reply_text(f(self))
-
-		self.telegram = Updater(token)
 		self.telegram_command_handler = telegram_command_handler
 		
 		for command in self.commands:
@@ -73,6 +75,20 @@ class Bot():
 					self.telegram_command_handler
 				)
 			)
+		
+		# default message handler
+		
+		def telegram_message_handler(bot, update):
+			message = update.message.text
+			update.message.reply_text(self.default_response(message))
+		self.telegram_message_handler = telegram_message_handler
+			
+		self.telegram.dispatcher.add_handler(
+			MessageHandler(
+				Filters.text,
+				self.telegram_message_handler
+			)
+		)
 		
 		self.telegram.start_polling()
 

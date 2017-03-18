@@ -37,6 +37,30 @@ def create_telegram_update(message_text):
 		update_id=0,
 		message=message
 	)
+	
+
+def test_telegram_default_response(mocker):
+	mocker.patch('telegram.ext.Updater')
+	mocker.patch('telegram.ext.MessageHandler')
+	mocker.patch('telegram.Message.reply_text')
+	
+	class MyBot(Bot):
+		
+		def default_response(self, in_message):
+			return in_message[::-1].upper()
+			
+	bot = MyBot()
+	bot.telegram_serve(
+		token='123:ABC'
+	)
+	
+	handlers_added = [args for args, kwargs in telegram.ext.MessageHandler.call_args_list]
+	assert len(handlers_added) > 0
+	generic_handler = list(handler for filter_, handler in handlers_added)[-1]
+	
+	message = 'this is the message'
+	generic_handler(bot, create_telegram_update(message))
+	assert call(bot.default_response(message)) in telegram.Message.reply_text.call_args_list
 
 
 def test_telegram_command(mocker):
@@ -58,7 +82,6 @@ def test_telegram_command(mocker):
 			return 'other command has been called'
 	
 	bot = MyBot()
-	
 	bot.telegram_serve(
 		token='123:ABC'
 	)

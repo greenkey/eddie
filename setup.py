@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name = 'pychatbot',
   packages = ['pychatbot'],
-  version = '0.3.1',
+  version = '0.4',
   description = 'A lib to create chatbots',
   author = 'Lorenzo Mele',
   author_email = 'greenkey@loman.it',
