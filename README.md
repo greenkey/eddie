@@ -1,6 +1,9 @@
 # pychatbot
 
-pychatbot is a library you can use to create your own chat bots.
+`pychatbot` is a library you can use to create your own chat bots in seconds.
+
+This is a very young library, any request/suggestion/help will be very
+appreciated. For them, create an issue or contact me!
 
 ## Install
 
@@ -11,7 +14,7 @@ $ pip install git+ssh://loman@192.168.1.60/~/2TB-BIG/Progetti/personalWorks/pych
 
 ## Usage
 
-you have to defile your bot class, extending the default `Bot` class:
+You have to define your bot class, extending the default `Bot` class:
 ```
 >>> from pychatbot.bot import Bot
 >>> class MyBot(Bot):
@@ -23,7 +26,7 @@ you have to defile your bot class, extending the default `Bot` class:
 
 ```
 
-of course you'll want to define some bahaviour, then continue to read.
+Of course you'll want to define some bahaviour, the following chapters teach you how to do it.
 
 ### Defining a default response
 
@@ -31,8 +34,8 @@ of course you'll want to define some bahaviour, then continue to read.
 >>> from pychatbot.bot import Bot
 >>> class MyBot(Bot):
 ...     def default_response(self, in_message):
-...             # setting echo as default response
-...             return in_message
+...         # setting echo as default response
+...         return in_message
 ... 
 >>> b = MyBot()
 >>> b.process("Hello!")
@@ -60,7 +63,8 @@ Just define a method of your Bot class using the `command` decorator.
 ### Defining interfaces
 
 A bot running in local would be pretty useless, isn't it?
-The simplest interfase we can give to our bot is the http one.
+
+The simplest interface we can give to our bot is the http one.
 
 ```
 >>> from pychatbot.bot import Bot
@@ -69,11 +73,33 @@ The simplest interfase we can give to our bot is the http one.
 ...             return in_message
 ... 
 >>> b = MyBot()
->>> b.listen_http()
+>>> b.http_serve()
 ```
 
-Then you can send message to the bot using simple GET requests (default port il 8000): `http://localhost:8000/process?in_message=hello`
-The output uwing the example will be a json with the message: `{"out_message": "hello"}`
+Then you can send message to the bot using simple GET requests (default 
+port is 8000): `http://localhost:8000/process?in_message=hello`
+
+The output using the example will be a json with the message: `{"out_message": "hello"}`
+
+### Telegram
+
+Yes, you can easily connect your bot with the Telegram API, thanks to
+the [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+library.
+
+You don't have to worry about nothing, except getting a token from the
+[BotFather](https://core.telegram.org/bots#botfather) and passing it
+to your bot.
+
+```
+>>> from pychatbot.bot import Bot
+>>> class MyBot(Bot):
+...     def default_response(self, in_message):
+...             return in_message
+... 
+>>> b = MyBot()
+>>> b.telegram_serve(token='123:ABC')
+```
 
 
 ## Get involved
