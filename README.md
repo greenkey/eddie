@@ -9,7 +9,7 @@ appreciated. For them, create an issue or contact me!
 
 You can install it downloading this repository in your project or using pip:
 ```
-$ pip install git+ssh://loman@192.168.1.60/~/2TB-BIG/Progetti/personalWorks/pychatbot
+$ pip install git+https://github.com/greenkey/pychatbot.git
 ```
 
 ## Usage
