@@ -1,6 +1,6 @@
 import json
 
-class Bot():
+class Bot(object):
 	commands = []
 	command_prepend = "/"
 	
@@ -17,7 +17,10 @@ class Bot():
 		from http.server import HTTPServer, BaseHTTPRequestHandler
 		import http
 		from threading import Thread
-		from urllib.parse import parse_qs
+		try:
+			from urllib.parse import parse_qs
+		except ImportError:
+			from urlparse import parse_qs
 
 		PORT = 8000
 

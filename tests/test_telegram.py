@@ -1,8 +1,6 @@
 import telegram
 
 from pychatbot.bot import Bot, command
-from unittest.mock import _Call as mock_call
-call = mock_call()
 
 
 def test_telegram_interface(mocker):
@@ -60,7 +58,7 @@ def test_telegram_default_response(mocker):
 	
 	message = 'this is the message'
 	generic_handler(bot, create_telegram_update(message))
-	assert call(bot.default_response(message)) in telegram.Message.reply_text.call_args_list
+	telegram.Message.reply_text.assert_called_with(bot.default_response(message))
 
 
 def test_telegram_command(mocker):
@@ -92,10 +90,10 @@ def test_telegram_command(mocker):
 	assert 'start','other' in commands_added
 	
 	commands_added['start'](bot, create_telegram_update('/start'))
-	assert call(bot.start(bot)) in telegram.Message.reply_text.call_args_list
+	telegram.Message.reply_text.assert_called_with(bot.start(bot))
 	
 	commands_added['other'](bot, create_telegram_update('/other'))
-	assert call(bot.other(bot)) in telegram.Message.reply_text.call_args_list
+	telegram.Message.reply_text.assert_called_with(bot.other(bot))
 	
 
 	

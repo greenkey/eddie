@@ -1,8 +1,11 @@
 from http.client import HTTPConnection
 import json
 from threading import Thread
-from urllib.parse import urlencode
 from time import sleep
+try:
+	from urllib.parse import urlencode
+except ImportError:
+	from urllib import urlencode
 
 from pychatbot.bot import Bot, command
 
