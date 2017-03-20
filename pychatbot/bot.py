@@ -94,6 +94,50 @@ class Bot(object):
 		)
 		
 		self.telegram.start_polling()
+		
+		
+	def facebook_serve(self):
+		from http.server import HTTPServer, BaseHTTPRequestHandler
+		import http
+		from threading import Thread
+		try:
+			from urllib.parse import parse_qs
+		except ImportError:
+			from urlparse import parse_qs
+
+		PORT = 8001
+
+		class Handler(BaseHTTPRequestHandler):
+			def do_GET(s):
+				
+				function, params = s.path.split("?")
+				function, params = function[1:], parse_qs(params)
+				
+				if function == "webhook":
+					if params["hub.mode"] == "subscribe" and params["hub.verify_token"] == "brontolo":
+						s.send_response(200)
+						s.end_headers()
+						s.wfile.write(params["hub.challenge"])
+					else:
+						s.send_response(403)
+						s.end_headers()
+						s.wfile.write("Failed validation")
+						
+				
+		def serve_loop():
+			while self.http_on:
+				self.httpd.handle_request()
+
+		self.httpd = HTTPServer(('', PORT), Handler)
+		self.http_on = True
+		self.http_thread = Thread(target=serve_loop)
+		self.http_thread.daemon = True
+		self.http_thread.start()
+		
+		while not self.http_thread.is_alive():
+			pass
+		
+		
 
 
 
