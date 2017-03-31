@@ -1,26 +1,26 @@
 from __future__ import absolute_import
-import telegram
+from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
 
 
 class TelegramEndpoint(object):
 
     def __init__(self, token):
-        self._telegram = telegram.ext.Updater(token)
+        self._telegram = Updater(token)
         self._token = token
 
     def set_bot(self, bot):
         self._bot = bot
 
         self._telegram.dispatcher.add_handler(
-            telegram.ext.MessageHandler(
-                telegram.ext.Filters.text,
+            MessageHandler(
+                Filters.text,
                 self.default_message_handler
             )
         )
 
         for command in self._bot.command_names:
             self._telegram.dispatcher.add_handler(
-                telegram.ext.CommandHandler(
+                CommandHandler(
                     command,
                     self.default_command_handler
                 )
