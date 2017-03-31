@@ -68,6 +68,7 @@ The simplest interface we can give to our bot is the http one.
 
 ```
 >>> from pychatbot.bot import Bot
+>>> from pychatbot.endpoints import HttpEndpoint
 >>> class MyBot(Bot):
 ...     def default_response(self, in_message):
 ...             return in_message
@@ -95,6 +96,7 @@ to your bot.
 
 ```
 >>> from pychatbot.bot import Bot
+>>> from pychatbot.endpoints import TelegramEndpoint
 >>> class MyBot(Bot):
 ...     def default_response(self, in_message):
 ...             return in_message

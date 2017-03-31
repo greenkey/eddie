@@ -7,7 +7,7 @@ except ImportError:
     from urllib import urlencode
 
 from pychatbot.bot import Bot, command
-from endpoints.http import HttpEndpoint
+from pychatbot.endpoints import HttpEndpoint
 
 
 def test_http_interface():

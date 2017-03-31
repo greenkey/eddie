@@ -1,7 +1,7 @@
 import telegram
 
 from pychatbot.bot import Bot, command
-from endpoints.telegram import TelegramEndpoint
+from pychatbot.endpoints import TelegramEndpoint
 
 
 def test_telegram_interface(mocker):
