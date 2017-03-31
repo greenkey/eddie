@@ -8,14 +8,14 @@ appreciated. For them, create an issue or contact me!
 ## Install
 
 You can install it downloading this repository in your project or using pip:
-```
+```shell
 $ pip install git+https://github.com/greenkey/pychatbot.git
 ```
 
 ## Usage
 
 You have to define your bot class, extending the default `Bot` class:
-```
+```python
 >>> from pychatbot.bot import Bot
 >>> class MyBot(Bot):
 ...     pass
@@ -30,7 +30,7 @@ Of course you'll want to define some bahaviour, the following chapters teach you
 
 ### Defining a default response
 
-```
+```python
 >>> from pychatbot.bot import Bot
 >>> class MyBot(Bot):
 ...     def default_response(self, in_message):
@@ -48,7 +48,7 @@ Of course you'll want to define some bahaviour, the following chapters teach you
 
 Just define a method of your Bot class using the `command` decorator.
 
-```
+```python
 >>> from pychatbot.bot import Bot, command
 >>> class MyBot(Bot):
 ...     @command
@@ -66,7 +66,7 @@ A bot running in local would be pretty useless, isn't it?
 
 The simplest interface we can give to our bot is the http one.
 
-```
+```python
 >>> from pychatbot.bot import Bot
 >>> from pychatbot.endpoints import HttpEndpoint
 >>> class MyBot(Bot):
@@ -94,7 +94,7 @@ You don't have to worry about nothing, except getting a token from the
 [BotFather](https://core.telegram.org/bots#botfather) and passing it
 to your bot.
 
-```
+```python
 >>> from pychatbot.bot import Bot
 >>> from pychatbot.endpoints import TelegramEndpoint
 >>> class MyBot(Bot):
@@ -114,9 +114,9 @@ to your bot.
 
 If you want to contribute, download the repository, then:
 
-```
-$ virtualenv venv # not required but highly suggested
-$ source venv/bin/activate
+```shell
+$ virtualenv ~/.venv/pychatbot # not required but highly suggested
+$ source ~/.venv/pychatbot/bin/activate
 $ pip install -r requirements.txt # install all the requirements
 $ pytest
 ```
