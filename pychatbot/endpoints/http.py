@@ -3,6 +3,7 @@ from threading import Thread
 from time import sleep
 from socket import error as socket_error
 from http.client import HTTPConnection
+import sys
 
 
 try:
@@ -22,7 +23,7 @@ class HttpEndpoint(object):
     _ADDRESS = "localhost"
 
     def __init__(self):
-        class Handler(BaseHTTPRequestHandler):
+        class Handler(BaseHTTPRequestHandler, object):
             def do_GET(handler):
                 function, params = handler.path.split("?")
                 function, params = function[1:], parse_qs(params)
@@ -37,7 +38,10 @@ class HttpEndpoint(object):
 
             def log_message(handler, format_, *args):
                 if self._bot.logging:
-                    super().log_message(format_, *args)
+                    if sys.version_info[:2] > (2, 6):
+                        super(Handler, handler).log_message(format_, *args)
+                    else:
+                        Handler.log_message(handler, format_, *args)
 
         self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
         self._http_on = False

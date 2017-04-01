@@ -3,3 +3,6 @@ setup.cfg
 setup.py
 pychatbot/__init__.py
 pychatbot/bot.py
+pychatbot/endpoints/__init__.py
+pychatbot/endpoints/http.py
+pychatbot/endpoints/telegram.py

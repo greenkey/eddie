@@ -48,6 +48,7 @@ def test_http_interface(create_bot):
     test_messages = ["hello", "another message"]
     for tm in test_messages:
         r = send_to_http_bot(bot, tm)
+
         assert r.status == 200
         ret = json.loads(r.read().decode())
         assert ret["out_message"] == tm[::-1]
