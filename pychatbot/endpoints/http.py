@@ -23,22 +23,21 @@ class HttpEndpoint(object):
 
     def __init__(self):
         class Handler(BaseHTTPRequestHandler):
-            def do_GET(s):
-                function, params = s.path.split("?")
+            def do_GET(handler):
+                function, params = handler.path.split("?")
                 function, params = function[1:], parse_qs(params)
-
-                s.send_response(200)
-                s.end_headers()
+                handler.send_response(200)
+                handler.end_headers()
                 output = {
                     "out_message": self._bot.process(
                         "".join(params["in_message"])
                     )
                 }
-                s.wfile.write(json.dumps(output).encode("UTF-8"))
+                handler.wfile.write(json.dumps(output).encode("UTF-8"))
 
-            def log_message(s, format_, *args):
+            def log_message(handler, format_, *args):
                 if self._bot.logging:
-                    super().log_message(format_,*args)
+                    super().log_message(format_, *args)
 
         self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
         self._http_on = False
