@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 from http.client import HTTPConnection
 import json
+import pytest
+from time import sleep
 try:
     from urllib.parse import urlencode
 except ImportError:
@@ -10,15 +12,30 @@ from pychatbot.bot import Bot, command
 from pychatbot.endpoints import HttpEndpoint
 
 
-def test_http_interface():
+@pytest.fixture
+def create_bot(request):
+
+    fixture = dict()
+
+    def create(bot_class, http_class):
+        fixture['bot'] = bot_class()
+        fixture['ep'] = http_class()
+        fixture['bot'].add_endpoint(fixture['ep'])
+        fixture['bot'].run()
+
+        return fixture['bot']
+
+    yield create
+
+    fixture['bot'].stop()
+
+
+def test_http_interface(create_bot):
     class MyBot(Bot):
         def default_response(self, in_message):
             return in_message[::-1]
 
-    bot = MyBot()
-    ep = HttpEndpoint()
-    bot.add_endpoint(ep)
-    bot.run()
+    create_bot(MyBot, HttpEndpoint)
 
     test_messages = ["hello", "another message"]
     for tm in test_messages:
@@ -30,10 +47,8 @@ def test_http_interface():
         assert ret["out_message"] == tm[::-1]
         conn.close()
 
-    bot.stop()
 
-
-def test_http_command():
+def test_http_command(create_bot):
     class MyBot(Bot):
         def default_response(self, in_message):
             return in_message[::-1]
@@ -42,10 +57,7 @@ def test_http_command():
         def start(self):
             return "Welcome!"
 
-    bot = MyBot()
-    ep = HttpEndpoint()
-    bot.add_endpoint(ep)
-    bot.run()
+    create_bot(MyBot, HttpEndpoint)
 
     conn = HTTPConnection("127.0.0.1:8000")
     conn.request("GET", "/process?in_message=/start")
@@ -55,35 +67,31 @@ def test_http_command():
     assert ret["out_message"] == "Welcome!"
     conn.close()
 
-    bot.stop()
 
-
-def test_bot_dont_logs_by_default(mocker):
+def test_bot_dont_logs_by_default(mocker, create_bot):
     log_message_m = mocker.patch(
         'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
-    bot = Bot()
-    ep = HttpEndpoint()
-    bot.add_endpoint(ep)
-    bot.run()
+    create_bot(Bot, HttpEndpoint)
+
     conn = HTTPConnection("127.0.0.1:8000")
     conn.request("GET", "/process?in_message=/start")
     conn.close()
-    bot.stop()
+    sleep(0.5)
 
     assert not log_message_m.called
 
 
-def test_bot_logs_if_set(mocker):
+def test_bot_logs_if_set(mocker, create_bot):
     log_message_m = mocker.patch(
         'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
-    bot = Bot()
-    ep = HttpEndpoint()
-    bot.add_endpoint(ep)
-    bot.run()
+
+    bot = create_bot(Bot, HttpEndpoint)
+
     bot.logging = True
+
     conn = HTTPConnection("127.0.0.1:8000")
     conn.request("GET", "/process?in_message=/start")
     conn.close()
-    bot.stop()
+    sleep(0.5)
 
     assert log_message_m.called
