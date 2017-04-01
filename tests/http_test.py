@@ -95,3 +95,26 @@ def test_bot_logs_if_set(mocker, create_bot):
     sleep(0.5)  # pause needed because log_message is asyncronous
 
     assert log_message_m.called
+
+
+def test_second_session_uses_random_port():
+    bot1 = Bot()
+    ep = HttpEndpoint()
+    bot1.add_endpoint(ep)
+    bot1.run()
+
+    bot2 = Bot()
+    ep = HttpEndpoint()
+    bot2.add_endpoint(ep)
+    bot2.run()
+
+    assert bot1.endpoints[0]._PORT != bot2.endpoints[0]._PORT
+
+    resp = send_to_http_bot(bot1, "/start")
+    assert resp.status == 200
+
+    resp = send_to_http_bot(bot2, "/start")
+    assert resp.status == 200
+
+    bot1.stop()
+    bot2.stop()

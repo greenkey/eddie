@@ -16,6 +16,7 @@ except ImportError:
     from SimpleHTTPServer import SimpleHTTPRequestHandler as BaseHTTPRequestHandler
     HTTPServer.allow_reuse_address = True
 import json
+from socket import error as socket_error
 
 
 class HttpEndpoint(object):
@@ -43,8 +44,16 @@ class HttpEndpoint(object):
                     else:
                         Handler.log_message(handler, format_, *args)
 
-        self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
-        self._http_on = False
+        port_found = False
+        while not port_found:
+            try:
+                self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
+                self._http_on = False
+                port_found = True
+            except OSError:
+                self._PORT += 1
+            except socket_error:
+                self._PORT += 1
 
     def set_bot(self, bot):
         self._bot = bot
