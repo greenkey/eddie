@@ -49,10 +49,41 @@ def test_http_command():
 
     conn = HTTPConnection("127.0.0.1:8000")
     conn.request("GET", "/process?in_message=/start")
-    r = conn.getresponse()
-    assert r.status == 200
-    ret = json.loads(r.read().decode())
+    resp = conn.getresponse()
+    assert resp.status == 200
+    ret = json.loads(resp.read().decode())
     assert ret["out_message"] == "Welcome!"
     conn.close()
 
     bot.stop()
+
+
+def test_bot_dont_logs_by_default(mocker):
+    log_message_m = mocker.patch(
+        'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
+    bot = Bot()
+    ep = HttpEndpoint()
+    bot.add_endpoint(ep)
+    bot.run()
+    conn = HTTPConnection("127.0.0.1:8000")
+    conn.request("GET", "/process?in_message=/start")
+    conn.close()
+    bot.stop()
+
+    assert not log_message_m.called
+
+
+def test_bot_logs_if_set(mocker):
+    log_message_m = mocker.patch(
+        'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
+    bot = Bot()
+    ep = HttpEndpoint()
+    bot.add_endpoint(ep)
+    bot.run()
+    bot.logging = True
+    conn = HTTPConnection("127.0.0.1:8000")
+    conn.request("GET", "/process?in_message=/start")
+    conn.close()
+    bot.stop()
+
+    assert log_message_m.called

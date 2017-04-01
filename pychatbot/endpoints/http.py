@@ -36,6 +36,10 @@ class HttpEndpoint(object):
                 }
                 s.wfile.write(json.dumps(output).encode("UTF-8"))
 
+            def log_message(s, format_, *args):
+                if self._bot.logging:
+                    super().log_message(format_,*args)
+
         self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
         self._http_on = False
 
