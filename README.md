@@ -79,8 +79,9 @@ The simplest interface we can give to our bot is the http one.
 >>> bot.run()
 ```
 
-Then you can send message to the bot using simple GET requests (default 
-port is 8000): `http://localhost:8000/process?in_message=hello`
+Then you can send message to the bot using simple GET requests: `http://localhost:8000/process?in_message=hello`
+
+Note: default port is 8000, if it is already used, `HttpEndpoint` will use the first free port after 8000 (8001, 8002...).
 
 The output using the example will be a json with the message: `{"out_message": "hello"}`
 
