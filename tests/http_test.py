@@ -30,22 +30,27 @@ def create_bot(request):
     fixture['bot'].stop()
 
 
+def send_to_http_bot(bot, in_message):
+    conn = HTTPConnection("127.0.0.1:8000")
+    conn.request("GET", "/process?" + urlencode({"in_message": in_message}))
+    response = conn.getresponse()
+    conn.close()
+    return response
+
+
 def test_http_interface(create_bot):
     class MyBot(Bot):
         def default_response(self, in_message):
             return in_message[::-1]
 
-    create_bot(MyBot, HttpEndpoint)
+    bot = create_bot(MyBot, HttpEndpoint)
 
     test_messages = ["hello", "another message"]
     for tm in test_messages:
-        conn = HTTPConnection("127.0.0.1:8000")
-        conn.request("GET", "/process?" + urlencode({"in_message": tm}))
-        r = conn.getresponse()
+        r = send_to_http_bot(bot, tm)
         assert r.status == 200
         ret = json.loads(r.read().decode())
         assert ret["out_message"] == tm[::-1]
-        conn.close()
 
 
 def test_http_command(create_bot):
@@ -57,26 +62,22 @@ def test_http_command(create_bot):
         def start(self):
             return "Welcome!"
 
-    create_bot(MyBot, HttpEndpoint)
+    bot = create_bot(MyBot, HttpEndpoint)
 
-    conn = HTTPConnection("127.0.0.1:8000")
-    conn.request("GET", "/process?in_message=/start")
-    resp = conn.getresponse()
+    resp = send_to_http_bot(bot, "/start")
+
     assert resp.status == 200
     ret = json.loads(resp.read().decode())
     assert ret["out_message"] == "Welcome!"
-    conn.close()
 
 
 def test_bot_dont_logs_by_default(mocker, create_bot):
     log_message_m = mocker.patch(
         'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
-    create_bot(Bot, HttpEndpoint)
+    bot = create_bot(Bot, HttpEndpoint)
 
-    conn = HTTPConnection("127.0.0.1:8000")
-    conn.request("GET", "/process?in_message=/start")
-    conn.close()
-    sleep(0.5)
+    send_to_http_bot(bot, "/start")
+    sleep(0.5)  # pause needed because log_message is asyncronous
 
     assert not log_message_m.called
 
@@ -89,9 +90,7 @@ def test_bot_logs_if_set(mocker, create_bot):
 
     bot.logging = True
 
-    conn = HTTPConnection("127.0.0.1:8000")
-    conn.request("GET", "/process?in_message=/start")
-    conn.close()
-    sleep(0.5)
+    send_to_http_bot(bot, "/start")
+    sleep(0.5)  # pause needed because log_message is asyncronous
 
     assert log_message_m.called
