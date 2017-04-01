@@ -3,7 +3,6 @@ class Bot(object):
     def __init__(self):
         self.command_prepend = "/"
         self.endpoints = []
-        self.logging = False
 
     @property
     def command_names(self):

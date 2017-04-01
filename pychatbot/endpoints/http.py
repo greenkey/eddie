@@ -3,8 +3,7 @@ from threading import Thread
 from time import sleep
 from socket import error as socket_error
 from http.client import HTTPConnection
-import sys
-
+import logging
 
 try:
     from urllib.parse import parse_qs
@@ -38,11 +37,7 @@ class HttpEndpoint(object):
                 handler.wfile.write(json.dumps(output).encode("UTF-8"))
 
             def log_message(handler, format_, *args):
-                if self._bot.logging:
-                    if sys.version_info[:2] > (2, 6):
-                        super(Handler, handler).log_message(format_, *args)
-                    else:
-                        Handler.log_message(handler, format_, *args)
+                logging.debug(format_, *args)
 
         port_found = False
         while not port_found:
@@ -54,6 +49,7 @@ class HttpEndpoint(object):
                 self._PORT += 1
             except socket_error:
                 self._PORT += 1
+        logging.info("Starting HTTP server on port %d", self._PORT)
 
     def set_bot(self, bot):
         self._bot = bot
@@ -61,6 +57,7 @@ class HttpEndpoint(object):
     def serve_loop(self):
         try:
             while self._http_on:
+                logging.debug("Ready for a new HTTP request...")
                 self._httpd.handle_request()
         except socket_error:
             pass

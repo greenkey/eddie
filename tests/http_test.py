@@ -72,31 +72,6 @@ def test_http_command(create_bot):
     assert ret["out_message"] == "Welcome!"
 
 
-def test_bot_dont_logs_by_default(mocker, create_bot):
-    log_message_m = mocker.patch(
-        'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
-    bot = create_bot(Bot, HttpEndpoint)
-
-    send_to_http_bot(bot, "/start")
-    sleep(0.5)  # pause needed because log_message is asyncronous
-
-    assert not log_message_m.called
-
-
-def test_bot_logs_if_set(mocker, create_bot):
-    log_message_m = mocker.patch(
-        'pychatbot.endpoints.http.BaseHTTPRequestHandler.log_message')
-
-    bot = create_bot(Bot, HttpEndpoint)
-
-    bot.logging = True
-
-    send_to_http_bot(bot, "/start")
-    sleep(0.5)  # pause needed because log_message is asyncronous
-
-    assert log_message_m.called
-
-
 def test_second_session_uses_random_port():
     bot1 = Bot()
     ep = HttpEndpoint()
