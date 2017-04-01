@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from http.client import HTTPConnection
 import json
 import pytest
-from time import sleep
+import requests
 try:
     from urllib.parse import urlencode
 except ImportError:
@@ -31,11 +31,14 @@ def create_bot(request):
 
 
 def send_to_http_bot(bot, in_message):
-    conn = HTTPConnection("127.0.0.1:8000")
-    conn.request("GET", "/process?" + urlencode({"in_message": in_message}))
-    response = conn.getresponse()
-    conn.close()
-    return response
+    for endpoint in bot.endpoints:
+        address = "http://%s:%d/process?%s" % (
+            endpoint._ADDRESS,
+            endpoint._PORT,
+            urlencode({"in_message": in_message})
+        )
+
+        return requests.get(address)
 
 
 def test_http_interface(create_bot):
@@ -47,10 +50,10 @@ def test_http_interface(create_bot):
 
     test_messages = ["hello", "another message"]
     for tm in test_messages:
-        r = send_to_http_bot(bot, tm)
+        resp = send_to_http_bot(bot, tm)
 
-        assert r.status == 200
-        ret = json.loads(r.read().decode())
+        assert resp.status_code == 200
+        ret = json.loads(resp.text)
         assert ret["out_message"] == tm[::-1]
 
 
@@ -67,8 +70,8 @@ def test_http_command(create_bot):
 
     resp = send_to_http_bot(bot, "/start")
 
-    assert resp.status == 200
-    ret = json.loads(resp.read().decode())
+    assert resp.status_code == 200
+    ret = json.loads(resp.text)
     assert ret["out_message"] == "Welcome!"
 
 
@@ -86,10 +89,10 @@ def test_second_session_uses_random_port():
     assert bot1.endpoints[0]._PORT != bot2.endpoints[0]._PORT
 
     resp = send_to_http_bot(bot1, "/start")
-    assert resp.status == 200
+    assert resp.status_code == 200
 
     resp = send_to_http_bot(bot2, "/start")
-    assert resp.status == 200
+    assert resp.status_code == 200
 
     bot1.stop()
     bot2.stop()
