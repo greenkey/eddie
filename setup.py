@@ -27,7 +27,6 @@ setup(
     author=pychatbot.__author__,
     author_email=pychatbot.__email__,
     description='A lib to create chatbots',
-    long_description=read('README.md'),
     url='http://github.com/greenkey/pychatbot/',
     packages=['pychatbot', 'pychatbot.endpoints'],
     include_package_data=True,
