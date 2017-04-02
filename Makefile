@@ -33,7 +33,7 @@ init: ## installs all the requirements for dev env
 
 venv-reset: ## resets current virtualenv to test a very clean test
 	pip uninstall `pip freeze` -y
-	init
+	make init
 
 lint: ## check style with flake8
 	pylint pychatbot
