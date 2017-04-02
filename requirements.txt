@@ -1,4 +1,1 @@
-pytest
-pytest-mock
 python-telegram-bot
-requests

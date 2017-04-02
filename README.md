@@ -118,6 +118,6 @@ If you want to contribute, download the repository, then:
 ```shell
 $ virtualenv ~/.venv/pychatbot # not required but highly suggested
 $ source ~/.venv/pychatbot/bin/activate
-$ pip install -r requirements.txt # install all the requirements
+$ pip install -r requirements-dev.txt # install all the requirements
 $ pytest
 ```
