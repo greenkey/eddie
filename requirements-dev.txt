@@ -3,4 +3,5 @@ pytest-mock
 tox
 requests
 bumpversion
+coverage
 -r requirements.txt
