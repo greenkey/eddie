@@ -111,6 +111,18 @@ to your bot.
 ```
 
 
+### Logging
+
+This library uses the logging module. To set up logging to standard output, put:
+
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
+at the beginning of your script.
+
+
 ## Get involved
 
 If you want to contribute, download the repository, then:
