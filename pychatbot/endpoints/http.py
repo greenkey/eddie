@@ -18,31 +18,34 @@ import json
 from socket import error as socket_error
 
 
+class HttpHandler(BaseHTTPRequestHandler, object):
+    _bot = None
+
+    def do_GET(self):
+        function, params = self.path.split("?")
+        function, params = function[1:], parse_qs(params)
+        self.send_response(200)
+        self.end_headers()
+        output = {
+            "out_message": self.server._bot.process(
+                "".join(params["in_message"])
+            )
+        }
+        self.wfile.write(json.dumps(output).encode("UTF-8"))
+
+    def log_message(self, format_, *args):
+        logging.debug(format_, *args)
+
+
 class HttpEndpoint(object):
     _PORT = 8000
     _ADDRESS = "localhost"
 
     def __init__(self):
-        class Handler(BaseHTTPRequestHandler, object):
-            def do_GET(handler):
-                function, params = handler.path.split("?")
-                function, params = function[1:], parse_qs(params)
-                handler.send_response(200)
-                handler.end_headers()
-                output = {
-                    "out_message": self._bot.process(
-                        "".join(params["in_message"])
-                    )
-                }
-                handler.wfile.write(json.dumps(output).encode("UTF-8"))
-
-            def log_message(handler, format_, *args):
-                logging.debug(format_, *args)
-
         port_found = False
         while not port_found:
             try:
-                self._httpd = HTTPServer((self._ADDRESS, self._PORT), Handler)
+                self._httpd = HTTPServer((self._ADDRESS, self._PORT), HttpHandler)
                 self._http_on = False
                 port_found = True
             except OSError:
@@ -53,6 +56,7 @@ class HttpEndpoint(object):
 
     def set_bot(self, bot):
         self._bot = bot
+        self._httpd._bot = bot
 
     def serve_loop(self):
         try:
