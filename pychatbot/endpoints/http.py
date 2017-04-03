@@ -91,6 +91,14 @@ class HttpEndpoint(object):
                 self._port += 1
         logging.info("Starting HTTP server on port %d", self._port)
 
+    @property
+    def host(self):
+        return self._host
+
+    @property
+    def port(self):
+        return self._port
+
     def set_bot(self, bot):
         """ Sets the main bot, the bot must be an instance of
             `pychatbot.bot.Bot`.

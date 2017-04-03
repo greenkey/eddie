@@ -1,7 +1,8 @@
+""" Not-so-unit tests for pychatbot.endpoints.HttpEndpoint
+"""
+
 from __future__ import absolute_import
-from http.client import HTTPConnection
 import json
-import pytest
 import requests
 try:
     from urllib.parse import urlencode
@@ -12,29 +13,14 @@ from pychatbot.bot import Bot, command
 from pychatbot.endpoints import HttpEndpoint
 
 
-@pytest.fixture
-def create_bot(request):
-
-    fixture = dict()
-
-    def create(bot_class, http_class):
-        fixture['bot'] = bot_class()
-        fixture['ep'] = http_class()
-        fixture['bot'].add_endpoint(fixture['ep'])
-        fixture['bot'].run()
-
-        return fixture['bot']
-
-    yield create
-
-    fixture['bot'].stop()
-
-
 def send_to_http_bot(bot, in_message):
+    """ Helper function: send a message to the bot using http
+    """
+
     for endpoint in bot.endpoints:
         address = "http://%s:%d/process?%s" % (
-            endpoint._host,
-            endpoint._port,
+            endpoint.host,
+            endpoint.port,
             urlencode({"in_message": in_message})
         )
 
@@ -42,28 +28,39 @@ def send_to_http_bot(bot, in_message):
 
 
 def test_http_interface(create_bot):
+    """ Test that the http interface uses the bot with the given bot class
+    """
+
     class MyBot(Bot):
+        "Reverse bot"
+
         def default_response(self, in_message):
             return in_message[::-1]
 
     bot = create_bot(MyBot, HttpEndpoint)
 
     test_messages = ["hello", "another message"]
-    for tm in test_messages:
-        resp = send_to_http_bot(bot, tm)
+    for message in test_messages:
+        resp = send_to_http_bot(bot, message)
 
         assert resp.status_code == 200
         ret = json.loads(resp.text)
-        assert ret["out_message"] == tm[::-1]
+        assert ret["out_message"] == message[::-1]
 
 
 def test_http_command(create_bot):
+    """ Test that the http interface correctly process commands
+    """
+
     class MyBot(Bot):
+        "Reverse bot, welcoming"
+
         def default_response(self, in_message):
             return in_message[::-1]
 
         @command
         def start(self):
+            "Welcome the user as first thing!"
             return "Welcome!"
 
     bot = create_bot(MyBot, HttpEndpoint)
