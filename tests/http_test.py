@@ -33,8 +33,8 @@ def create_bot(request):
 def send_to_http_bot(bot, in_message):
     for endpoint in bot.endpoints:
         address = "http://%s:%d/process?%s" % (
-            endpoint._ADDRESS,
-            endpoint._PORT,
+            endpoint._host,
+            endpoint._port,
             urlencode({"in_message": in_message})
         )
 
@@ -86,7 +86,7 @@ def test_second_session_uses_random_port():
     bot2.add_endpoint(ep)
     bot2.run()
 
-    assert bot1.endpoints[0]._PORT != bot2.endpoints[0]._PORT
+    assert bot1.endpoints[0]._port != bot2.endpoints[0]._port
 
     resp = send_to_http_bot(bot1, "/start")
     assert resp.status_code == 200
