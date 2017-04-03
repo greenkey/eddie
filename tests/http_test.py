@@ -72,18 +72,24 @@ def test_http_command(create_bot):
     assert ret["out_message"] == "Welcome!"
 
 
-def test_second_session_uses_random_port():
+def test_uses_a_free_port():
+    """ Tests that calling twice the same server, the second uses another port.
+
+        This is used to allow the server to start even if the port is used by
+        another process.
+    """
+
     bot1 = Bot()
-    ep = HttpEndpoint()
-    bot1.add_endpoint(ep)
+    endpoint1 = HttpEndpoint()
+    bot1.add_endpoint(endpoint1)
     bot1.run()
 
     bot2 = Bot()
-    ep = HttpEndpoint()
-    bot2.add_endpoint(ep)
+    endpoint2 = HttpEndpoint()
+    bot2.add_endpoint(endpoint2)
     bot2.run()
 
-    assert bot1.endpoints[0]._port != bot2.endpoints[0]._port
+    assert bot1.endpoints[0].port != bot2.endpoints[0].port
 
     resp = send_to_http_bot(bot1, "/start")
     assert resp.status_code == 200
