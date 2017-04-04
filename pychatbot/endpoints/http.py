@@ -19,7 +19,7 @@ except ImportError:
 import json
 
 
-class HttpHandler(BaseHTTPRequestHandler, object):
+class _HttpHandler(BaseHTTPRequestHandler, object):
     """ Derived class of BaseHTTPRequestHandler, to handle the http requests
         of the HttpEndpoint http server.
     """
