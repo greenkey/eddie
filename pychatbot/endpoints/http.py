@@ -84,7 +84,10 @@ class HttpEndpoint(object):
         port_found = False
         while not port_found:
             try:
-                self._httpd = HTTPServer((self._host, self._port), HttpHandler)
+                self._httpd = HTTPServer(
+                    (self._host, self._port),
+                    _HttpHandler
+                )
                 self._http_on = False
                 port_found = True
             except (OSError, socket_error):
