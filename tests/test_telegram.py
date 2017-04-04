@@ -1,31 +1,16 @@
+""" Unit tests for pychatbot.endpoints.TelegramEndpoint
+"""
+
 import telegram
 
 from pychatbot.bot import Bot, command
 from pychatbot.endpoints import TelegramEndpoint
 
 
-def test_telegram_interface(mocker):
-    Updater_m = mocker.patch('pychatbot.endpoints.telegram.Updater')
-
-    class MyBot(Bot):
-        def default_response(self, in_message):
-            return in_message.lower()
-
-    bot = MyBot()
-
-    ep = TelegramEndpoint(
-        token='123:ABC'
-    )
-    bot.add_endpoint(ep)
-    bot.run()
-
-    Updater_m.assert_called_once_with('123:ABC')
-    assert Updater_m().start_polling.called
-
-    bot.stop()
-
-
 def create_telegram_update(message_text):
+    """ Helper function: create an "Update" to simulate a message sent to the
+        Telegram bot.
+    """
     from datetime import datetime
     message = telegram.Message(
         message_id=0,
@@ -41,26 +26,56 @@ def create_telegram_update(message_text):
     )
 
 
+def test_telegram_interface(mocker):
+    """ Test that the Telegram API is called when using the endpoint.
+    """
+
+    mock_updater = mocker.patch('pychatbot.endpoints.telegram.Updater')
+
+    class MyBot(Bot):
+        "Lowering bot"
+
+        def default_response(self, in_message):
+            return in_message.lower()
+
+    bot = MyBot()
+
+    endpoint = TelegramEndpoint(
+        token='123:ABC'
+    )
+    bot.add_endpoint(endpoint)
+    bot.run()
+
+    mock_updater.assert_called_once_with('123:ABC')
+    assert mock_updater().start_polling.called
+
+    bot.stop()
+
+
 def test_telegram_default_response(mocker):
+    """ Test that the Telegram bot correctly reply with the default response.
+    """
+
     mocker.patch('pychatbot.endpoints.telegram.Updater')
-    MessageHandler_m = mocker.patch(
+    mock_messagehandler = mocker.patch(
         'pychatbot.endpoints.telegram.MessageHandler')
     reply_text_m = mocker.patch('telegram.Message.reply_text')
 
     class MyBot(Bot):
+        "Uppering-reversing bot"
 
         def default_response(self, in_message):
             return in_message[::-1].upper()
 
     bot = MyBot()
-    ep = TelegramEndpoint(
+    endpoint = TelegramEndpoint(
         token='123:ABC'
     )
-    bot.add_endpoint(ep)
+    bot.add_endpoint(endpoint)
     bot.run()
 
     handlers_added = [args for args,
-                      kwargs in MessageHandler_m.call_args_list]
+                      kwargs in mock_messagehandler.call_args_list]
     assert len(handlers_added) > 0
     generic_handler = list(handler for filter_, handler in handlers_added)[-1]
 
@@ -73,33 +88,40 @@ def test_telegram_default_response(mocker):
 
 
 def test_telegram_command(mocker):
+    """ Test that the endpoint class correctly registers the commands callback
+        and that the Telegram bot uses them to reply to messages.
+    """
+
     mocker.patch('pychatbot.endpoints.telegram.Updater')
-    CommandHandler_m = mocker.patch(
+    mock_commandhandler = mocker.patch(
         'pychatbot.endpoints.telegram.CommandHandler')
     reply_text_m = mocker.patch('telegram.Message.reply_text')
 
     class MyBot(Bot):
+        "Reversing bot"
 
         def default_response(self, in_message):
             return in_message[::-1]
 
         @command
         def start(self):
+            "start command"
             return 'start command has been called'
 
         @command
         def other(self):
+            "other command"
             return 'other command has been called'
 
     bot = MyBot()
-    ep = TelegramEndpoint(
+    endpoint = TelegramEndpoint(
         token='123:ABC'
     )
-    bot.add_endpoint(ep)
+    bot.add_endpoint(endpoint)
     bot.run()
 
     commands_added = [args for args,
-                      kwargs in CommandHandler_m.call_args_list]
+                      kwargs in mock_commandhandler.call_args_list]
     commands_added = dict((name, handler) for name, handler in commands_added)
 
     assert 'start' in commands_added
