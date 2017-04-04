@@ -97,14 +97,14 @@ class Bot(object):
         """ Call the endpoint's run method, to start receving messages and
             process them.
         """
-        for endpnt in self.endpoints:
-            endpnt.run()
+        for endpoint in self.endpoints:
+            endpoint.run()
 
     def stop(self):
         """ Stop the enpoint's polling/message receiving.ep
         """
-        for endpnt in self.endpoints:
-            endpnt.stop()
+        for endpoint in self.endpoints:
+            endpoint.stop()
 
 
 # decorator
