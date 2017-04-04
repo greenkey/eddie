@@ -29,6 +29,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 init: ## installs all the requirements for dev env
+	pip install --upgrade pip
 	pip install -r requirements-dev.txt
 
 venv-reset: ## resets current virtualenv to test a very clean test
