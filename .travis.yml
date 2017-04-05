@@ -14,3 +14,4 @@ install:
   - pip install tox-travis
 script:
   - tox
+  - coverall
