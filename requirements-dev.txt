@@ -5,4 +5,5 @@ requests
 bumpversion
 coverage
 pylint
+mccabe
 -r requirements.txt

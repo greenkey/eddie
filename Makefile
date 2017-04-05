@@ -49,3 +49,5 @@ coverage: ## check code coverage quickly with the default Python
 	coverage run --source pychatbot -m pytest
 		coverage report -m
 
+complexity: ## list the list of too complex functions and methos
+	python -m mccabe --min 7 `find pychatbot -name "*.py"` | sort -r -k 3

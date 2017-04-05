@@ -41,13 +41,15 @@ class Bot(object):
             `@command` decorator.
         """
         for method_name in dir(self):
-            method = getattr(self, method_name)
-            if callable(method):
-                try:
-                    if method.is_command:
-                        yield method_name
-                except AttributeError:
-                    pass
+            if self._is_command(method_name):
+                yield method_name
+
+    def _is_command(self, command_name):
+        command = getattr(self, command_name)
+        try:
+            return callable(command) and command.is_command
+        except AttributeError:
+            return False
 
     def default_response(self, in_message):
         """ This method is called whenever a message is sent to the bot and
