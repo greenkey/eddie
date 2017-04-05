@@ -1,6 +1,7 @@
 # pychatbot
 
 [![Build Status](https://travis-ci.org/greenkey/pychatbot.svg?branch=develop)](https://travis-ci.org/greenkey/pychatbot)
+[![Coverage Status](https://coveralls.io/repos/github/greenkey/pychatbot/badge.svg?branch=develop)](https://coveralls.io/github/greenkey/pychatbot?branch=develop)
 
 `pychatbot` is a library you can use to create your own chat bots in seconds.
 
