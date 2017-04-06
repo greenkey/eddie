@@ -12,7 +12,5 @@ python:
   - "nightly"
 install:
   - pip install tox-travis
-  - pip install coveralls
 script:
   - tox
-  - coverall

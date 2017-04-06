@@ -6,5 +6,4 @@ bumpversion
 coverage
 pylint
 mccabe
-coveralls
 -r requirements.txt
