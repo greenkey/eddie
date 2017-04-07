@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+import os
 
 import pychatbot
 
 
 def read(filename):
-    with open(filename) as file:
+    with open(os.path.join(os.path.dirname(__file__), filename)) as file:
         return file.read()
 
 
 def get_requirements(req):
     if req.startswith('-r'):
-        for subreq in get_requirements(req.split()[1]):
-            yield subreq
-    else:
+        for line in read(req.split()[1]).split("\n"):
+            for subreq in get_requirements(line):
+                yield subreq
+    elif req:
         yield req
 
 
@@ -29,8 +31,8 @@ setup(
     include_package_data=True,
     platforms='any',
     keywords=['chatbot', 'telegram'],
-    tests_require=get_requirements('-r requirements-dev.txt'),
-    install_requires=get_requirements('-r requirements.txt'),
+    tests_require=list(get_requirements('-r requirements-dev.txt')),
+    install_requires=list(get_requirements('-r requirements.txt')),
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         "Programming Language :: Python :: 2",
