@@ -74,24 +74,23 @@ class HttpEndpoint(object):
         `{"out_message": "hello"}`
     """
 
-    _port = 8000
     _host = "localhost"
 
-    def __init__(self):
+    def __init__(self, port=8000):
         self.bot = None
-        self._http_thread = Thread(target=self.serve_loop)
+        self._port = port
 
-        port_found = False
-        while not port_found:
-            try:
-                self._httpd = HTTPServer(
-                    (self._host, self._port),
-                    _HttpHandler
-                )
-                self._http_on = False
-                port_found = True
-            except (OSError, socket_error):
-                self._port += 1
+        try:
+            self._httpd = HTTPServer(
+                (self._host, self._port),
+                _HttpHandler
+            )
+        except (OSError, socket_error) as e:
+            raise e
+            return None
+
+        self._http_on = False
+        self._http_thread = Thread(target=self.serve_loop)
         logging.info("Starting HTTP server on port %d", self._port)
 
     @property

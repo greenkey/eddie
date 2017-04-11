@@ -17,13 +17,13 @@ def create_bot():
 
     fixture = dict()
 
-    def create(bot_class, http_class):
+    def create(bot, endpoint):
         """ The real function that creates the bot.
 
             This is needed because the fixture cannot accept parameters.
         """
-        fixture['bot'] = bot_class()
-        fixture['ep'] = http_class()
+        fixture['bot'] = bot
+        fixture['ep'] = endpoint
         fixture['bot'].add_endpoint(fixture['ep'])
         fixture['bot'].run()
 
