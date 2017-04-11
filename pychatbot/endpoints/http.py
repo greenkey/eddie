@@ -8,13 +8,14 @@ from socket import error as socket_error
 from http.client import HTTPConnection
 import logging
 
-try:
+try:  # specific imports for Python 3
     from urllib.parse import parse_qs
     from http.server import HTTPServer, BaseHTTPRequestHandler
-except ImportError:
+except ImportError:  # specific imports for Python 2
     from urlparse import parse_qs
     from SocketServer import TCPServer as HTTPServer
     from SimpleHTTPServer import SimpleHTTPRequestHandler as BaseHTTPRequestHandler
+    ConnectionRefusedError = socket_error
     HTTPServer.allow_reuse_address = True
 import json
 
