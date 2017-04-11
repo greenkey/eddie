@@ -139,7 +139,10 @@ class HttpEndpoint(object):
         conn = HTTPConnection(
             self._host + ":" + str(self._port)
         )
-        conn.request("GET", "/shutdown")
+        try:
+            conn.request("GET", "/shutdown")
+        except ConnectionRefusedError:
+            pass
         conn.close()
         while self._http_thread.is_alive():
             sleep(0.5)
