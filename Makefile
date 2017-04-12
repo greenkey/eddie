@@ -36,7 +36,7 @@ venv-reset: ## resets current virtualenv to test a very clean test
 	pip uninstall `pip freeze` -y
 	make init
 
-lint: ## check style with flake8
+lint: ## check style with pylint
 	pylint pychatbot
 
 test: clean-pyc ## run tests quickly with the default Python
