@@ -15,6 +15,8 @@ You can install it downloading this repository in your project or using pip:
 $ pip install git+https://github.com/greenkey/pychatbot.git
 ```
 
+A package in the PyPI repository will be available soon.
+
 ## Usage
 
 You have to define your bot class, extending the default `Bot` class:
