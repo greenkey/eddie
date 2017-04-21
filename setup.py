@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 
-from setuptools import setup
-import os
-
 import pychatbot
 
 
-def read(filename):
-    with open(os.path.join(os.path.dirname(__file__), filename)) as file:
-        return file.read()
+import pip
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 
-def get_requirements(req):
-    if req.startswith('-r'):
-        for line in read(req.split()[1]).split("\n"):
-            for subreq in get_requirements(line):
-                yield subreq
-    elif req:
-        yield req
+def get_requirements(reqfile):
+    try:
+        requirements = pip.req.parse_requirements(
+            reqfile, session=pip.download.PipSession())
+    except TypeError:
+        requirements = pip.req.parse_requirements(reqfile)
+
+    return [str(item.req) for item in requirements if item.req]
 
 
 setup(
@@ -30,9 +31,9 @@ setup(
     packages=['pychatbot', 'pychatbot.endpoints'],
     include_package_data=True,
     platforms='any',
-    keywords=['chatbot', 'telegram'],
-    tests_require=list(get_requirements('-r requirements-dev.txt')),
-    install_requires=list(get_requirements('-r requirements.txt')),
+    keywords=['chat', 'chatbot', 'telegram', 'twitter'],
+    tests_require=['pytest'],
+    install_requires=get_requirements('requirements.txt'),
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         "Programming Language :: Python :: 2",

@@ -6,4 +6,5 @@ include MANIFEST
 include Makefile
 include pytest.ini
 include tox.ini
+include requirements.txt
 recursive-include tests *.py
