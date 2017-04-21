@@ -90,7 +90,7 @@ class Bot(object):
             Every endpoint has its own configuration so find your endpoint and
             look for needed information.
 
-            pychatbot will take care of the rest: registering commands,
+            eddie will take care of the rest: registering commands,
             getting messages, sending them...
 
         """

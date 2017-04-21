@@ -1,14 +1,14 @@
 <html>
  <head>
-  <title>Pychatbot</title>
+  <title>eddie</title>
   <script>
 
     function init(){
-    	document.getElementById("pychatbot-message").focus();
+    	document.getElementById("eddie-message").focus();
     }
 
   	function sendMessage(){
-  		var input = document.getElementById("pychatbot-message");
+  		var input = document.getElementById("eddie-message");
 
   		addMessage("you", input.value);
   		var url = "/process?in_message=" + encodeURIComponent(input.value);
@@ -29,14 +29,14 @@
 
   	function addMessage(user, message){
   		var text = "<p><b>" + user + ":</b> " + message + "</p>";
-  		var chatScreen = document.getElementById("pychatbot-read")
+  		var chatScreen = document.getElementById("eddie-read")
   		chatScreen.innerHTML += text;
   		chatScreen.scrollTop += 100;
   	}
 
   </script>
   <style type="text/css">
-  	#pychatbot-read {
+  	#eddie-read {
   		height: 90%;
   		overflow-y: scroll;
   		border: 1px solid silver;
@@ -44,10 +44,10 @@
   </style>
  </head>
  <body onload="javascript: init()">
-  <div id="pychatbot-read"></div>
-  <div id="pychatbot-write">
+  <div id="eddie-read"></div>
+  <div id="eddie-write">
     <form action="javascript: sendMessage()">
-	  <input type="text" id="pychatbot-message" />
+	  <input type="text" id="eddie-message" />
 	  <input type="submit" value="Send" />
 	</form>
   </div>

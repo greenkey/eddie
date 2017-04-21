@@ -1,4 +1,4 @@
-""" Twitter endpoint for a pychatbot bot, use this to connect your bot to
+""" Twitter endpoint for a eddie bot, use this to connect your bot to
     Twitter.
 
     This module needs `tweepy` library.
@@ -34,7 +34,7 @@ class MyStreamListener(tweepy.StreamListener):
 
 
 class TwitterEndpoint(object):
-    """ Twitter endpoint for a pychatbot bot.
+    """ Twitter endpoint for a eddie bot.
 
         Example usage:
 
@@ -65,7 +65,7 @@ class TwitterEndpoint(object):
 
     def set_bot(self, bot):
         """ Sets the main bot, the bot must be an instance of
-            `pychatbot.bot.Bot`.
+            `eddie.bot.Bot`.
 
             TwitterEndpoint will use the bot to know how to behave.
         """
