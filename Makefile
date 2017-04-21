@@ -55,6 +55,6 @@ coverage: ## check code coverage quickly with the default Python
 complexity: ## list the list of too complex functions and methos
 	python -m mccabe --min 7 `find pychatbot -name "*.py"` | sort -r -k 3
 
-build-test: #clean test-all ## build the package and upload
+build-test: clean-build # test-all ## build the package and upload
 	python setup.py sdist
 	twine upload dist/* -r testpypi
