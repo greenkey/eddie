@@ -8,4 +8,4 @@
 
 __author__ = """Lorenzo Mele"""
 __email__ = 'greenkey@loman.it'
-__version__ = '0.9.3'
+__version__ = '0.9.4'

@@ -35,7 +35,7 @@ setup(
     tests_require=['pytest'],
     install_requires=get_requirements('requirements.txt'),
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
