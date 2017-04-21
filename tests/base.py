@@ -1,7 +1,7 @@
-""" Tests for the main class of pychatbot: pychatbot.bot.Bot
+""" Tests for the main class of eddie: eddie.bot.Bot
 """
 
-from pychatbot.bot import Bot
+from eddie.bot import Bot
 
 
 def test_create_bot_object():
@@ -34,7 +34,7 @@ def test_add_command():
         starts with a "/" by default)
     """
 
-    from pychatbot.bot import command
+    from eddie.bot import command
 
     class MyBot(Bot):
         "Command bot"

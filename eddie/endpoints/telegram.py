@@ -1,4 +1,4 @@
-""" Telegram endpoint for a pychatbot bot, use this to connect your bot to
+""" Telegram endpoint for a eddie bot, use this to connect your bot to
     Telegram.
 
     This module needs `python-telegram-bot` library.
@@ -9,7 +9,7 @@ from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
 
 
 class TelegramEndpoint(object):
-    """ Telegram endpoint for a pychatbot bot, use this to connect your bot to
+    """ Telegram endpoint for a eddie bot, use this to connect your bot to
         Telegram.
 
         The init needs the token given by the BotFather in order to configure
@@ -32,7 +32,7 @@ class TelegramEndpoint(object):
 
     def set_bot(self, bot):
         """ Sets the main bot, the bot must be an instance of
-            `pychatbot.bot.Bot`.
+            `eddie.bot.Bot`.
 
             This method is in charge of registering all the bot's commands and
             default message handlers.

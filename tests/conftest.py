@@ -1,4 +1,4 @@
-""" This module contains a set of utility to test pychatbot.
+""" This module contains a set of utility to test eddie.
 
     cfr. http://pytest.org/2.2.4/plugins.html
 """

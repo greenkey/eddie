@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pychatbot
+import eddie
 
 
 import pip
@@ -22,20 +22,20 @@ def get_requirements(reqfile):
 
 
 setup(
-    name='pychatbot',
-    version=pychatbot.__version__,
-    author=pychatbot.__author__,
-    author_email=pychatbot.__email__,
+    name='eddie',
+    version=eddie.__version__,
+    author=eddie.__author__,
+    author_email=eddie.__email__,
     description='A lib to create chatbots',
-    url='http://github.com/greenkey/pychatbot/',
-    packages=['pychatbot', 'pychatbot.endpoints'],
+    url='http://github.com/greenkey/eddie/',
+    packages=['eddie', 'eddie.endpoints'],
     include_package_data=True,
     platforms='any',
     keywords=['chat', 'chatbot', 'telegram', 'twitter'],
     tests_require=['pytest'],
     install_requires=get_requirements('requirements.txt'),
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',

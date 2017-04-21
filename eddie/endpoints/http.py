@@ -1,4 +1,4 @@
-""" Http endpoint for a pychatbot bot, use this to give your bot some REST API.
+""" Http endpoint for a eddie bot, use this to give your bot some REST API.
 """
 
 from __future__ import absolute_import
@@ -70,7 +70,7 @@ class _HttpHandler(BaseHTTPRequestHandler, object):
 
 
 class HttpEndpoint(object):
-    """ Http endpoint for a pychatbot bot, use this to give your bot some REST
+    """ Http endpoint for a eddie bot, use this to give your bot some REST
         API.
 
         Example usage:
@@ -118,7 +118,7 @@ class HttpEndpoint(object):
 
     def set_bot(self, bot):
         """ Sets the main bot, the bot must be an instance of
-            `pychatbot.bot.Bot`.
+            `eddie.bot.Bot`.
 
             HttpEndpoint will use the bot to get the responses for the chat
             messages.

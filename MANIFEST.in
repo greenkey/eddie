@@ -7,5 +7,5 @@ include Makefile
 include pytest.ini
 include tox.ini
 include requirements.txt
-include pychatbot/endpoints/http/*
+include eddie/endpoints/http/*
 recursive-include tests *.py
