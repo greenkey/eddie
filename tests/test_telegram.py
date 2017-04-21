@@ -1,10 +1,10 @@
-""" Unit tests for pychatbot.endpoints.TelegramEndpoint
+""" Unit tests for eddie.endpoints.TelegramEndpoint
 """
 
 import telegram
 
-from pychatbot.bot import Bot, command
-from pychatbot.endpoints import TelegramEndpoint
+from eddie.bot import Bot, command
+from eddie.endpoints import TelegramEndpoint
 
 
 def create_telegram_update(message_text):
@@ -30,7 +30,7 @@ def test_telegram_interface(mocker):
     """ Test that the Telegram API is called when using the endpoint.
     """
 
-    mock_updater = mocker.patch('pychatbot.endpoints.telegram.Updater')
+    mock_updater = mocker.patch('eddie.endpoints.telegram.Updater')
 
     class MyBot(Bot):
         "Lowering bot"
@@ -56,9 +56,9 @@ def test_telegram_default_response(mocker):
     """ Test that the Telegram bot correctly reply with the default response.
     """
 
-    mocker.patch('pychatbot.endpoints.telegram.Updater')
+    mocker.patch('eddie.endpoints.telegram.Updater')
     mock_messagehandler = mocker.patch(
-        'pychatbot.endpoints.telegram.MessageHandler')
+        'eddie.endpoints.telegram.MessageHandler')
     reply_text_m = mocker.patch('telegram.Message.reply_text')
 
     class MyBot(Bot):
@@ -92,9 +92,9 @@ def test_telegram_command(mocker):
         and that the Telegram bot uses them to reply to messages.
     """
 
-    mocker.patch('pychatbot.endpoints.telegram.Updater')
+    mocker.patch('eddie.endpoints.telegram.Updater')
     mock_commandhandler = mocker.patch(
-        'pychatbot.endpoints.telegram.CommandHandler')
+        'eddie.endpoints.telegram.CommandHandler')
     reply_text_m = mocker.patch('telegram.Message.reply_text')
 
     class MyBot(Bot):

@@ -1,4 +1,4 @@
-""" Not-so-unit tests for pychatbot.endpoints.HttpEndpoint
+""" Not-so-unit tests for eddie.endpoints.HttpEndpoint
 """
 
 from __future__ import absolute_import
@@ -11,8 +11,8 @@ try:
 except ImportError:
     from urllib import urlencode
 
-from pychatbot.bot import Bot, command
-from pychatbot.endpoints import HttpEndpoint
+from eddie.bot import Bot, command
+from eddie.endpoints import HttpEndpoint
 
 
 def send_to_http_bot(bot, in_message, port=None):

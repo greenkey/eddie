@@ -40,7 +40,7 @@ venv-reset: ## resets current virtualenv to test a very clean test
 	make init
 
 lint: ## check style with pylint
-	pylint pychatbot
+	pylint eddie
 
 test: clean-pyc ## run tests quickly with the default Python
 	pytest
@@ -49,11 +49,11 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source pychatbot -m pytest
+	coverage run --source eddie -m pytest
 	coverage report -m
 
 complexity: ## list the list of too complex functions and methos
-	python -m mccabe --min 7 `find pychatbot -name "*.py"` | sort -r -k 3
+	python -m mccabe --min 7 `find eddie -name "*.py"` | sort -r -k 3
 
 dist-test: clean-build # test-all ## build the package and upload
 	python setup.py register -r https://testpypi.python.org/pypi

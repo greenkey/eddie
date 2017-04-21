@@ -1,12 +1,12 @@
-''' Unit tests for pychatbot.endpoints.TelegramEndpoint
+''' Unit tests for eddie.endpoints.TelegramEndpoint
 '''
 
 import pytest
 import json
 from tweepy.models import ModelFactory
 
-from pychatbot.bot import Bot, command
-from pychatbot.endpoints import TwitterEndpoint
+from eddie.bot import Bot, command
+from eddie.endpoints import TwitterEndpoint
 
 
 class TweepyMocker:
@@ -96,7 +96,7 @@ class TweepyMocker:
             },
             "target": {
                 "id": 852396996136763392,
-                "screen_name": "pychatbot",
+                "screen_name": "eddie",
             }
         }
 

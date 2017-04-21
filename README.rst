@@ -1,9 +1,9 @@
-pychatbot
+eddie
 =========
 
 |Build Status|
 
-``pychatbot`` is a library you can use to create your own chat bots in
+``eddie`` is a library you can use to create your own chat bots in
 seconds.
 
 This is a very young library, any request/suggestion/help will be very
@@ -17,7 +17,7 @@ pip:
 
 .. code:: shell
 
-    $ pip install git+https://github.com/greenkey/pychatbot.git
+    $ pip install git+https://github.com/greenkey/eddie.git
 
 A package in the PyPI repository will be available soon.
 
@@ -28,7 +28,7 @@ You have to define your bot class, extending the default ``Bot`` class:
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot
+    >>> from eddie.bot import Bot
     >>> class MyBot(Bot):
     ...     pass
     ... 
@@ -44,7 +44,7 @@ Defining a default response
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot
+    >>> from eddie.bot import Bot
     >>> class MyBot(Bot):
     ...     def default_response(self, in_message):
     ...         # setting echo as default response
@@ -63,7 +63,7 @@ Just define a method of your Bot class using the ``command`` decorator.
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot, command
+    >>> from eddie.bot import Bot, command
     >>> class MyBot(Bot):
     ...     @command
     ...     def hello(self):
@@ -82,8 +82,8 @@ The simplest interface we can give to our bot is the http one.
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot
-    >>> from pychatbot.endpoints import HttpEndpoint
+    >>> from eddie.bot import Bot
+    >>> from eddie.endpoints import HttpEndpoint
     >>> class MyBot(Bot):
     ...     def default_response(self, in_message):
     ...             return in_message
@@ -116,8 +116,8 @@ to your bot.
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot
-    >>> from pychatbot.endpoints import TelegramEndpoint
+    >>> from eddie.bot import Bot
+    >>> from eddie.endpoints import TelegramEndpoint
     >>> class MyBot(Bot):
     ...     def default_response(self, in_message):
     ...             return in_message
@@ -132,7 +132,7 @@ to your bot.
 Twitter
 ~~~~~~~~
 
-It's not a proper bot framework, but with ``pychatbot`` you can have a bot in
+It's not a proper bot framework, but with ``eddie`` you can have a bot in
 Twitter too, thanks to the `tweepy <https://github.com/tweepy/tweepy>`__
 library.
 
@@ -141,8 +141,8 @@ Just follow the instrunction on `how to create a Twitter App <https://apps.twitt
 
 .. code:: python
 
-    >>> from pychatbot.bot import Bot
-    >>> from pychatbot.endpoints import TwitterEndpoint
+    >>> from eddie.bot import Bot
+    >>> from eddie.endpoints import TwitterEndpoint
     >>> class MyBot(Bot):
     ...     def default_response(self, in_message):
     ...             return in_message
@@ -177,10 +177,10 @@ If you want to contribute, download the repository, then:
 
 .. code:: shell
 
-    $ virtualenv ~/.venv/pychatbot # not required but highly suggested
-    $ source ~/.venv/pychatbot/bin/activate
+    $ virtualenv ~/.venv/eddie # not required but highly suggested
+    $ source ~/.venv/eddie/bin/activate
     $ pip install -r requirements-dev.txt # install all the requirements
     $ pytest
 
-.. |Build Status| image:: https://travis-ci.org/greenkey/pychatbot.svg?branch=master
-   :target: https://travis-ci.org/greenkey/pychatbot
+.. |Build Status| image:: https://travis-ci.org/greenkey/eddie.svg?branch=master
+   :target: https://travis-ci.org/greenkey/eddie
