@@ -44,9 +44,17 @@ class _HttpHandler(BaseHTTPRequestHandler, object):
             function, params = function[1:], parse_qs(params)
             self.send_response(200)
             self.end_headers()
+            output_text = self.server.bot.process(
+                "".join(params["in_message"])
+            )
             output = {
-                "out_message": self.server.bot.process(
-                    "".join(params["in_message"])
+                "out_message": output_text,
+                "out_message_html": output_text.encode(
+                    'ascii', 'xmlcharrefreplace'
+                ).replace("&","&amp;"
+                ).replace("<","&lt;"
+                ).replace(">","&gt;"
+                ).replace("\n","<br />"
                 )
             }
             self.wfile.write(json.dumps(output).encode("UTF-8"))

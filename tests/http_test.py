@@ -50,6 +50,28 @@ def test_http_interface(create_bot):
         assert ret["out_message"] == message[::-1]
 
 
+def test_returns_text_and_html(create_bot):
+    """ Test that the endpoint response contains the same message in plain text
+        and in HTML formatting (\n -> <br />)
+    """
+
+    class MyBot(Bot):
+        "Echo bot"
+
+        def default_response(self, in_message):
+            return in_message
+
+    bot = create_bot(MyBot(), HttpEndpoint(port=randint(8000, 9000)))
+
+    resp = send_to_http_bot(bot, "Hello,\nit's me&myself.\nBut <me> it's not <myself>")
+
+    assert resp.status_code == 200
+    ret = json.loads(resp.text)
+    assert ret["out_message"] == "Hello,\nit's me&myself.\nBut <me> it's not <myself>"
+    assert ret["out_message_html"] == "Hello,<br />it's me&amp;myself.<br />" + \
+        "But &lt;me&gt; it's not &lt;myself&gt;"
+
+
 def test_http_command(create_bot):
     """ Test that the http interface correctly process commands
     """
