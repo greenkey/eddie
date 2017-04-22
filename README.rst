@@ -12,14 +12,18 @@ appreciated. For them, create an issue or contact me!
 Install
 -------
 
-You can install it downloading this repository in your project or using
-pip:
+You can install eddie using just pip:
+
+.. code:: shell
+
+    $ pip install eddie
+
+If you want the latest version download this repository in your project or
+using pip:
 
 .. code:: shell
 
     $ pip install git+https://github.com/greenkey/eddie.git
-
-A package in the PyPI repository will be available soon.
 
 Usage
 -----
