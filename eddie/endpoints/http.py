@@ -108,7 +108,6 @@ class HttpEndpoint(object):
             )
         except (OSError, socket_error) as e:
             raise e
-            return None
 
         self._http_on = False
         self._http_thread = Thread(target=self.serve_loop)
