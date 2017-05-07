@@ -27,10 +27,12 @@ class MyStreamListener(tweepy.StreamListener):
         data = json.loads(raw_data)
 
         if 'direct_message' in data:
-            self.endpoint.process_new_direct_message(data['direct_message'])
+            dm = data['direct_message']
+            if dm['sender']['id'] != self.endpoint._api.me().id:
+                return self.endpoint.process_new_direct_message(dm)
 
         elif data.get('event', '') == 'follow':
-            self.endpoint.process_new_follower(data['source'])
+            return self.endpoint.process_new_follower(data['source'])
 
 
 class TwitterEndpoint(object):
@@ -106,14 +108,18 @@ class TwitterEndpoint(object):
     def process_new_direct_message(self, direct_message):
         """ Method called for each new DMs arrived.
         """
-        response = self._bot.process(in_message=direct_message['text'])
 
-        self._api.send_direct_message(
-            text=response,
-            user_id=direct_message['sender']['id']
-        )
+        if direct_message['id'] > self._last_processed_dm:
+            response = self._bot.process(in_message=direct_message['text'])
 
-        self._last_processed_dm = direct_message['id']
+            self._api.send_direct_message(
+                text=response,
+                user_id=direct_message['sender']['id']
+            )
+
+            self._last_processed_dm = direct_message['id']
+
+        return True
 
     def process_new_follower(self, user):
         """ Follow the user if it isn't already followed.
@@ -128,6 +134,8 @@ class TwitterEndpoint(object):
                 text=self._bot.start(),
                 user_id=user['id']
             )
+
+        return True
 
     def check_new_followers(self):
         """ For each follower (not friend) process it (follow and start bot).
