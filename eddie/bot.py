@@ -47,9 +47,9 @@ class Bot(object):
     def _is_command(self, command_name):
         """ Returns true if the Bot instance have a command named `command_name`
         """
-        command = getattr(self, command_name)
+        method = getattr(self, command_name)
         try:
-            return callable(command) and command.is_command
+            return callable(method) and method.is_command
         except AttributeError:
             return False
 
