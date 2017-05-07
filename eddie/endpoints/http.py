@@ -49,13 +49,11 @@ class _HttpHandler(BaseHTTPRequestHandler, object):
             )
             output = {
                 "out_message": output_text,
-                "out_message_html": output_text.encode(
-                    'ascii', 'xmlcharrefreplace'
-                ).replace("&","&amp;"
-                ).replace("<","&lt;"
-                ).replace(">","&gt;"
-                ).replace("\n","<br />"
-                )
+                "out_message_html": output_text.replace(
+                    '&', '&amp;').replace(
+                    '<', '&lt;').replace(
+                    '>', '&gt;').replace(
+                    '\n', '<br />')
             }
             self.wfile.write(json.dumps(output).encode("UTF-8"))
         except ValueError:
