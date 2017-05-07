@@ -19,7 +19,7 @@
 	    xhr.responseType = 'json';
 	    xhr.onload = function() {
 	      if (xhr.status == 200) {
-	        addMessage("bot", xhr.response.out_message);
+	        addMessage("bot", xhr.response.out_message_html);
 	      } else {
 	        addMessage("system", "Error");
 	      }
