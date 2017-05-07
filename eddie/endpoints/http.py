@@ -8,6 +8,7 @@ from socket import error as socket_error
 from http.client import HTTPConnection
 import logging
 import os
+from cgi import escape as escape_html
 
 try:  # specific imports for Python 3
     from urllib.parse import parse_qs
@@ -63,10 +64,10 @@ class _HttpHandler(BaseHTTPRequestHandler, object):
                 'http',
                 'index.html'
             )
-            with open(filename, 'r') as f:
+            with open(filename, 'r') as template_file:
                 self.send_response(200)
                 self.end_headers()
-                output = f.read()
+                output = template_file.read()
             self.wfile.write(output.encode("UTF-8"))
 
     def log_message(self, format_, *args):
@@ -106,9 +107,8 @@ class HttpEndpoint(object):
                 (self._host, self._port),
                 _HttpHandler
             )
-        except (OSError, socket_error) as e:
-            raise e
-            return None
+        except (OSError, socket_error) as error:
+            raise error
 
         self._http_on = False
         self._http_thread = Thread(target=self.serve_loop)
@@ -116,10 +116,12 @@ class HttpEndpoint(object):
 
     @property
     def host(self):
+        """ host getter """
         return self._host
 
     @property
     def port(self):
+        """ port getter """
         return self._port
 
     def set_bot(self, bot):

@@ -5,7 +5,6 @@
 """
 
 from __future__ import absolute_import
-from time import sleep
 import json
 
 import tweepy
@@ -27,9 +26,9 @@ class MyStreamListener(tweepy.StreamListener):
         data = json.loads(raw_data)
 
         if 'direct_message' in data:
-            dm = data['direct_message']
-            if dm['sender']['id'] != self.endpoint._api.me().id:
-                return self.endpoint.process_new_direct_message(dm)
+            direct_message = data['direct_message']
+            if direct_message['sender']['id'] != self.endpoint._api.me().id:
+                return self.endpoint.process_new_direct_message(direct_message)
 
         elif data.get('event', '') == 'follow':
             return self.endpoint.process_new_follower(data['source'])
