@@ -9,6 +9,7 @@ from http.client import HTTPConnection
 import logging
 import os
 from cgi import escape as escape_html
+import ssl
 
 try:  # specific imports for Python 3
     from urllib.parse import parse_qs
@@ -96,7 +97,7 @@ class HttpEndpoint(object):
 
     _host = "localhost"
 
-    def __init__(self, port=8000):
+    def __init__(self, port=8000, certfile=None):
         self.bot = None
         self._port = port
 
@@ -105,6 +106,12 @@ class HttpEndpoint(object):
                 (self._host, self._port),
                 _HttpHandler
             )
+            if certfile:
+                self._httpd.socket = ssl.wrap_socket(
+                    self._httpd.socket,
+                    certfile=certfile,
+                    server_side=True
+                )
         except (OSError, socket_error) as error:
             raise error
 
