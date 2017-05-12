@@ -95,7 +95,7 @@ class HttpEndpoint(object):
         `{"out_message": "hello"}`
     """
 
-    _host = "localhost"
+    _host = "0.0.0.0"
 
     def __init__(self, port=8000, certfile=None):
         self.bot = None
